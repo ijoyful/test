@@ -146,7 +146,12 @@ function deleteScore(hak) {
 	
 	if(confirm('자료를 삭제 하시겠습니까 ?')) {
 		location.href = url;
-	}	
+		}
+}
+
+function printScore() {
+	let url = '${pageContext.request.contextPath}/escore/print';
+	window.open(url, 'score','width=800, height=500, left=50, top=50');
 }
 </script>
 

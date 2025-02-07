@@ -44,6 +44,9 @@ dependencies {
 	// Excel
 	implementation 'org.apache.poi:poi:5.4.0'
 	implementation 'org.apache.poi:poi-ooxml:5.4.0'
+	
+	// PDF
+	 implementation 'com.lowagie:itext:2.1.7'
 }
 
 tasks.named('test') {

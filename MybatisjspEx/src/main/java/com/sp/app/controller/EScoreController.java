@@ -236,6 +236,7 @@ public class EScoreController {
 		model.addAttribute("list", list);
 		
 		return "escore/print";
-	}	
+	}
+	
 
 }
