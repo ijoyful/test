@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sp.app.mapper.ScoreMapper">
+
+	<insert id="insertScore" parameterType="com.sp.app.model.Score">
+		INSERT INTO score(hak, name, birth, kor, eng, mat)
+			VALUES (#{hak}, #{name}, TO_DATE(#{birth}, 'YYYY-MM-DD'),
+			 #{kor}, #{eng}, #{mat})
+	</insert>
+	
+	<!-- 반복적인 구문은 따로 작성하여 쿼리에 추가할 수 있다. -->
+	<sql id="where-list">
+		<if test="schType=='hak' ">
+			hak = #{kwd}
+		</if>
+		<if test="schType=='name' ">
+			INSTR(name, #{kwd}) &gt;= 1
+		</if>
+		<if test="schType=='birth'">
+			( TO_CHAR(birth, 'YYYY-MM-DD') = #{kwd} OR
+				TO_CHAR(birth, 'YYYYMMDD') = #{kwd} )
+		</if>
+	</sql>
+	
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM score
+		<where>
+			<if test="kwd!=null and kwd !='' ">
+				<include refid="where-list"/>
+			</if>
+		</where>
+	</select>
+	
+	<select id="listScore" parameterType="map"
+			resultType="com.sp.app.model.Score">
+		SELECT hak, name, TO_CHAR(birth, 'YYYY-MM-DD') birth,
+			kor, eng, mat, (kor+eng+mat) tot,
+			(kor+eng+mat)/3 ave
+		FROM score
+		<where>
+			<if test="kwd!=null and kwd !='' ">
+				<include refid="where-list"/>
+			</if>
+		</where>
+		ORDER BY hak ASC
+		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+	</select>
+	
+	<select id="findByAll" resultType="com.sp.app.model.Score">
+		SELECT hak, name, TO_CHAR(birth,'YYYY-MM-DD') birth,
+			kor, eng, mat, (kor+eng+mat) tot, 
+			(kor+eng+mat)/3 ave
+		FROM score
+		ORDER BY hak ASC
+	</select>
+	
+	<select id="findById" parameterType="String"
+			resultType="com.sp.app.model.Score">
+		SELECT hak, name, TO_CHAR(birth, 'YYYY-MM-DD') birth,
+			kor, eng, mat
+		FROM score
+		WHERE hak = #{hak}
+	</select>
+	
+	<update id="updateScore" parameterType="com.sp.app.model.Score">
+		UPDATE score SET name = #{name}, birth = TO_DATE(#{birth}, 'YYYY-MM-DD'),
+			kor = #{kor}, eng = #{eng}, mat = #{mat}
+		WHERE hak = #{hak}
+	</update>
+	
+	<delete id="deleteScore" parameterType="String">
+		DELETE FROM score
+		WHERE hak = #{hak}
+	</delete>
+
+	<!-- collection의 속성값(파라미터타입 변수명)은 항상 list로 설정해야함 -->
+	<delete id="deleteListScore" parameterType="java.util.List">
+		DELETE FROM score
+		WHERE hak IN
+		<foreach collection="list" item="hak" index="index"
+			open="(" separator="," close=")">
+			#{hak}
+		</foreach>
+	</delete>	
+	
+</mapper>

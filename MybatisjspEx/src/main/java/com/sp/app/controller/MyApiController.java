@@ -26,8 +26,8 @@ public class MyApiController {
 			@RequestParam(name = "ny") String ny) {	// JSON 형식의 문자열 반환
 		String result = null;
 		
-		String serviceKey = "vYwgtLTSSTfELMH8Zq1xjcLpW2f1lSQaf%2B864OIjzAwhuUllU9I5R0fgvgJ%2FecGWSm%2BBb%2BoHVAeaJNMtNv6sZA%3D%3D";
-		String spec = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst";
+		String serviceKey = "";
+		String spec = "";
 		int numOfRows = 10;
 		int pageNo = 1;
 		String dataType = "JSON";

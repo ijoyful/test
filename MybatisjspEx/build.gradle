@@ -40,6 +40,10 @@ dependencies {
 	
 	// 재실행 없이 바로 프론트 반영
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	
+	// Excel
+	implementation 'org.apache.poi:poi:5.4.0'
+	implementation 'org.apache.poi:poi-ooxml:5.4.0'
 }
 
 tasks.named('test') {
